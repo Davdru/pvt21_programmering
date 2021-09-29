@@ -24,6 +24,7 @@ def run():
     print("1 - add numbers")
     print("2 - subtract numbers")
     print("3 - multiply numbers")
+    print("4 - divide numbers")
     answer = input(">>")
     a = int(input("A="))
     b = int(input("B="))
