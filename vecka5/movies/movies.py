@@ -21,12 +21,13 @@ def get_movie_by_title(title: str):
 
 
 def search_by_title(title: str):
-    params = {'t': title, 'apikey': API_KEY}
+    params = {'s': title, 'apikey': API_KEY}
     res = requests.get(URL, params).json()
     if res['Response'] == 'True':
         return res
     else:
-        raise MovieNotFound(f"No titles matching {title} found")
+        raise MovieNotFound(res['Error'])
+
 
 def main():
     # Fråga användaren efter filmtitel och skriv ut data
@@ -37,10 +38,20 @@ def main():
             break
 
         try:
-            res = get_movie_by_title(title)
+            res = search_by_title(title)
             # Använd requests.get() för att hämta data om en film från omdbapi
             # if res['Response']
-            print_movie(res)
+            # print_movie(res)
+
+            # [1] Alien (1979)
+            # [2] Alien3 (1992)
+            for i, m in enumerate(res['Search'], start=1):
+                print(f"[{i}] {m['Title']} ({m['Year']})")
+
+            selected = int(input(">"))
+            t = res['Search'][selected-1]
+            print(t)
+
         except MovieNotFound as e:
             print(e)
 
