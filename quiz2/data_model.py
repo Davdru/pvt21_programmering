@@ -29,3 +29,4 @@ class Question:
 
     def percent_correct(self) -> str:
         return f"{self.times_correct / self.times_asked:.0%}"
+

@@ -5,20 +5,17 @@ from quiz2.data_model import Answer, Question
 QUIZ_URL = "https://bjornkjellgren.se/quiz/v2/questions"
 
 
-def get_questions() -> list[Question]:
-    response = requests.get(QUIZ_URL).json()
-    res = []
-    for q in response['questions']:
-        # Här skall vi "parsa" en fråga och lägga till i listan res
-        res.append(parse_question(q))
-    return res
+def get_questions(url: str) -> list[Question]:
+    questions = requests.get(url).json()['questions']
+    return [parse_question(q) for q in questions]
+
+
+def parse_answer(a) -> Answer:
+    return Answer(a['answer'], a['correct'])
 
 
 def parse_answers(answers) -> list[Answer]:
-    res = []
-    for a in answers:
-        res.append(Answer(a['answer'], a['correct']))
-    return res
+    return [parse_answer(a) for a in answers]
 
 
 def parse_question(q) -> Question:
@@ -26,10 +23,16 @@ def parse_question(q) -> Question:
 
 
 if __name__ == '__main__':
-    for question in get_questions():
+    for question in get_questions(QUIZ_URL):
         print(question.prompt)
         print(f"{question.percent_correct()} användare svarade rätt på frågan")
         for i, answer in enumerate(question.answers, start=1):
             print(f"[{i}] {answer}")
+
+        print("correct answers")
+
+        # Koden nedan skapar en lista med textsträngen answer från
+        # alla svar på frågan question som är rätt
+        print([a.answer for a in question.answers if a.correct])
 
         print("-" * 80)
