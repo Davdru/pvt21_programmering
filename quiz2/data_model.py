@@ -1,7 +1,4 @@
 class Answer:
-    # Implementera klassen Answer
-    # Vilka attribut skall den ha?
-    # Vilka metoder behöver vi?
     answer: str
     correct: bool
 
@@ -29,4 +26,8 @@ class Question:
 
     def percent_correct(self) -> str:
         return f"{self.times_correct / self.times_asked:.0%}"
+
+    @property
+    def num_answers(self):
+        return len(self.answers)
 
