@@ -1,4 +1,4 @@
-from quiz2.api import QuizAPI, BaseAPI
+from quiz2.api import QuizAPI, BaseAPI, FileAPI, DummyAPI
 from random import randint
 
 
@@ -24,7 +24,7 @@ class DummyPlayer(Player):
 
 
 class QuizGame:
-    quiz_api: BaseAPI
+    quiz_api: BaseAPI # Betyder att quiz_api skall ha metoderna get_questions och post_answer
     player: Player
 
     def __init__(self, quiz_api: BaseAPI, player: Player):
@@ -48,7 +48,13 @@ class QuizGame:
 
 
 if __name__ == '__main__':
-    q_api = QuizAPI(QUIZ_URL)
-    p = DummyPlayer()
+    q_api = QuizAPI(QUIZ_URL) # QuizAPI hämtar frågor från nätet
+    # q_api = FileAPI() # File api, läser frågorna från en fil på hårddisken
+    # q_api = BaseAPI() # BaseAPI är en abstrakt basklass, är inte tänkt att användas
+    # q_api = DummyAPI() # DummyAPI har bara en fråga
+    p = DummyPlayer() # Slumpar fram ett svar
+    # p = ConsolePlayer() # Ber användaren mata in ett svar i terminalen
+    # Beroende på vilket API och vilken spelare vi matar in i QuizGame får vi olika beteende
+    # Men vi behöver inte ändra någonting inuti QuizGame
     quiz = QuizGame(q_api, p)
     quiz.run()
