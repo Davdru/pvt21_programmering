@@ -1,11 +1,14 @@
 import json
 
-PHONEBOOK = "phonebook.json"
+PHONEBOOK = "phonebook2.json"
 
 
 def load_phonebook():
-    with open(PHONEBOOK) as f:
-        return json.load(f)
+    try:
+        with open(PHONEBOOK) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
 
 
 def save_phonebook(pb):
@@ -17,7 +20,6 @@ def print_menu():
     print("[1] List numbers")
     print("[2] Add number")
     print("[3] Delete number")
-    print("[4] Save phonebook")
 
 
 def get_new_entry():
@@ -34,21 +36,34 @@ def main():
         print_menu()
         v = input(">")
         if v == "1":
-            for p in phonebook:
-                print(f"{p}: {phonebook[p]}")
+            print_phonebook(phonebook)
         elif v == "2":
-            name, number = get_new_entry()
-            phonebook[name] = number
+            add_phonebook_entry(phonebook)
         elif v == "3":
-            name = input("Name to delete>")
-            try:
-                del phonebook[name]
-            except KeyError:
-                print(f"Entry {name} not found")
-        elif v == "4":
-            save_phonebook(phonebook)
+            del_phonebook_entry(phonebook)
         else:
             break
+
+
+def del_phonebook_entry(phonebook):
+    name = input("Name to delete>")
+    try:
+        del phonebook[name]
+        save_phonebook(phonebook)
+    except KeyError:
+        print(f"Entry {name} not found")
+
+
+def add_phonebook_entry(phonebook):
+    name, number = get_new_entry()
+    phonebook[name] = number
+    save_phonebook(phonebook)
+
+
+def print_phonebook(phonebook):
+    for p in phonebook:
+        print(f"{p}: {phonebook[p]}")
+    print("-" * 40)
 
 
 if __name__ == '__main__':

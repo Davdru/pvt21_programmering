@@ -226,11 +226,55 @@ l6 = ["Björn", "Ett väldigt långt namn", "Louise", "Carl", "Alma"]
 # För omvänd sorteringsordning använd argumentet reverse=True
 print(sorted(l6))
 print(sorted(l6, key=lambda s: len(s)))
-
-
-
-
-
-# sorted
-# Funktioner av högre ordning
 # rekursiva funktioner
+
+line("Rekursion")
+# Rekursiva funktioner är funktioner som anropar sig själva
+# Vi har tidigare använt funktioner där man kanske i sin tur anropar någon annan funktion
+# Det är på samma sätt möjligt att i en funktion anropa sig själv
+# Ett vanligt exempel på det är en funktion för att beräkna fakultet eller factorial som det heter på engelska
+# 5 fakultet, 5 factorial eller kortare 5! räknas ut som 1*2*3*4*5 eller 5*4*3*2*1
+
+def factorial_iterative(n: int):
+    res = 1
+    for i in range(1, n+1):
+        res = res*i
+    return res
+
+print(factorial_iterative(5))
+
+# Om vi tittar på definitionen fakultet ser vi att:
+# 5! är samma sak som 5*4!, 5 fakultet är samma sak som 5 gånger 4 fakultet.
+# 4! i sin tur är samma sak som 4*3!, 3!=3*2!, 2!=2*1!, 1!=1*0! och 0!=1
+# Det här är en rekursiv definition
+#
+
+
+def factorial_recursive(n: int):
+    if n == 0:
+        return 1
+    return n*factorial_recursive(n-1)
+
+print(factorial_recursive(100))
+
+# factorial(5)
+#   factorial(4)
+#       factorial(3)
+#           factorial(2)
+#               factorial(1)
+#                   factorial(0)
+
+# Funktioner av högre ordning
+
+
+def adder(n):
+    def inner(a):
+        return n+a
+    return inner
+
+
+add10 = adder(10)
+add7 = adder(7)
+
+print(add10(5))
+print(add7(3))
